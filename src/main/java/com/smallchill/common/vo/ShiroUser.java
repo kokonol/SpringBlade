@@ -57,7 +57,7 @@ public class ShiroUser implements Serializable {
 		String deptSql;
 		String subDepts = null;
 		if (Func.isOracle()) {
-			deptSql = "select wm_concat(ID) subDepts from (select ID,PID,SIMPLENAME from TFW_DEPT start with ID in (#{join(deptIds)}) connect by prior ID=PID order by ID) a where a.ID not in (#{join(deptIds)})";
+			deptSql = "select wm_concat(ID) subDepts from (select ID,PID,SIMPLENAME from tfw_dept start with ID in (#{join(deptIds)}) connect by prior ID=PID order by ID) a where a.ID not in (#{join(deptIds)})";
 			subDepts = Db.queryStr(deptSql, Paras.create().set("deptIds", deptId.toString().split(",")));
 		} else {
 			String[] arr = deptId.toString().split(",");
@@ -75,7 +75,7 @@ public class ShiroUser implements Serializable {
 		String roleSql;
 		String subRoles = null;
 		if (Func.isOracle()) {
-			roleSql = "select wm_concat(ID) subRoles from (select ID,PID,NAME from TFW_ROLE start with ID in (#{join(roleIds)}) connect by prior ID=PID order by ID) a where a.ID not in (#{join(roleIds)})";
+			roleSql = "select wm_concat(ID) subRoles from (select ID,PID,NAME from tfw_role start with ID in (#{join(roleIds)}) connect by prior ID=PID order by ID) a where a.ID not in (#{join(roleIds)})";
 			subRoles = Db.queryStr(roleSql, Paras.create().set("roleIds", roleList));
 		} else {
 			StringBuilder sb = new StringBuilder();
@@ -92,7 +92,7 @@ public class ShiroUser implements Serializable {
 		List<Map<String, Object>> listUser = CacheKit.get(ConstCache.USER_CACHE, "user_all_list", new ILoader() {
 			@Override
 			public Object load() {
-				return Db.selectList("SELECT * FROM TFW_USER");
+				return Db.selectList("SELECT * FROM tfw_user");
 			}
 		});
 		

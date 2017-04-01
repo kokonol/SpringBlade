@@ -42,7 +42,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
 
 	@Override
 	public boolean saveAuthority(String ids, String roleId) {
-		Db.deleteByIds("TFW_RELATION", "ROLEID", roleId);
+		Db.deleteByIds("tfw_relation", "ROLEID", roleId);
 		
 		String sql = "";
 		String insertSql = "";
@@ -57,10 +57,10 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
 
 		if (Func.isOracle()) {
 			sql = "select SEQ_RELATION.nextval,i.* from (" + sql + ") i";
-			insertSql = "insert into TFW_RELATION(id,menuId,roleId) ";
+			insertSql = "insert into tfw_relation(id,menuId,roleId) ";
 		} else {
 			sql = "select i.* from (" + sql + ") i";
-			insertSql = "insert into TFW_RELATION(menuId,roleId) ";
+			insertSql = "insert into tfw_relation(menuId,roleId) ";
 		}
 
 		int cnt = Db.update(insertSql + sql, null);
@@ -72,10 +72,10 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT");
 		sb.append("(CASE WHEN ");
-		sb.append("	(select (CASE when (PID=0 or PID is null) then ID else 0 end) as ID from TFW_ROLE where ID=#{id})>0 ");
+		sb.append("	(select (CASE when (PID=0 or PID is null) then ID else 0 end) as ID from tfw_role where ID=#{id})>0 ");
 		sb.append("THEN 1 ");
 		sb.append("ELSE");
-		sb.append("	(select count(*) from TFW_RELATION where ROLEID=(select (CASE when (PID=0 or PID is null) then ID else PID end) as ID from TFW_ROLE where ID=#{id})) ");
+		sb.append("	(select count(*) from tfw_relation where ROLEID=(select (CASE when (PID=0 or PID is null) then ID else PID end) as ID from tfw_role where ID=#{id})) ");
 		sb.append("END) CNT");
 		if (Func.isOracle()) {
 			sb.append(" from dual");

@@ -53,7 +53,7 @@ public class UserController extends BaseController implements ConstShiro{
 	private static String LIST_SOURCE = "user.list";
 	private static String BASE_PATH = "/system/user/";
 	private static String CODE = "user";
-	private static String PERFIX = "TFW_USER";
+	private static String PERFIX = "tfw_user";
 
 	@RequestMapping("/")
 	@Permission({ ADMINISTRATOR, ADMIN })
@@ -418,7 +418,7 @@ public class UserController extends BaseController implements ConstShiro{
 		List<Map<String, Object>> dept = CacheKit.get(DEPT_CACHE, "user_tree_all",
 				new ILoader() {
 					public Object load() {
-						return Db.selectList("select id \"id\",pId \"pId\",simpleName as \"name\",(case when (pId=0 or pId is null) then 'true' else 'false' end) \"open\" from  TFW_DEPT order by pId,num asc", Paras.create(), new AopContext(), new IQuery() {
+						return Db.selectList("select id \"id\",pId \"pId\",simpleName as \"name\",(case when (pId=0 or pId is null) then 'true' else 'false' end) \"open\" from  tfw_dept order by pId,num asc", Paras.create(), new AopContext(), new IQuery() {
 							
 							@Override
 							public void queryBefore(AopContext ac) {

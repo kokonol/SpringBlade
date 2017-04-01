@@ -50,7 +50,7 @@ public class SideBarTag extends Tag {
 			Map<String, Object> userRole = CacheKit.get(MENU_CACHE, "role_ext_" + userId, new ILoader() {
 				@Override
 				public Object load() {
-					return Db.selectOne("select * from TFW_ROLE_EXT where USERID=#{userId}", Paras.create().set("userId", userId));
+					return Db.selectOne("select * from tfw_role_ext where USERID=#{userId}", Paras.create().set("userId", userId));
 				}
 			}); 
 
@@ -63,11 +63,11 @@ public class SideBarTag extends Tag {
 				roleOut = rd.getStr("ROLEOUT");
 			}
 			final StringBuilder sql = new StringBuilder();
-			sql.append("select * from TFW_MENU  ");
+			sql.append("select * from tfw_menu  ");
 			sql.append(" where ( ");
 			sql.append("	 (status=1)");
 			sql.append("	 and (icon is not null and icon not LIKE '%btn%' and icon not LIKE '%icon%') ");
-			sql.append("	 and (id in (select menuId from TFW_RELATION where roleId in (" + roleId + ")) or id in (" + roleIn + "))");
+			sql.append("	 and (id in (select menuId from tfw_relation where roleId in (" + roleId + ")) or id in (" + roleIn + "))");
 			sql.append("	 and id not in(" + roleOut + ")");
 			sql.append("	)");
 			sql.append(" order by levels,pCode,num");

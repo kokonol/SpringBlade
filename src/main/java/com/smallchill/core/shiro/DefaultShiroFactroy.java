@@ -64,7 +64,7 @@ public class DefaultShiroFactroy implements IShiro{
 	public List<Map> findPermissionsByRoleId(final Object userId, String roleId) {
 		Map<String, Object> userRole =  Db.selectOneByCache(ConstCache.MENU_CACHE, 
 															"role_ext_" + userId, 
-															"select * from TFW_ROLE_EXT where USERID=#{userId}", 
+															"select * from tfw_role_ext where USERID=#{userId}",
 															Paras.create().set("userId", userId));
 
 		String roleIn = "0";
@@ -76,11 +76,11 @@ public class DefaultShiroFactroy implements IShiro{
 		}
 		
 		final StringBuilder sql = new StringBuilder();
-		sql.append("select ID,CODE,URL from TFW_MENU  ");
+		sql.append("select ID,CODE,URL from tfw_menu  ");
 		sql.append(" where ( ");
 		sql.append("	 (status=1)");
 		sql.append("	 and (url is not null) ");
-		sql.append("	 and (id in (select menuId from TFW_RELATION where roleId in (" + roleId + ")) or id in (" + roleIn + "))");
+		sql.append("	 and (id in (select menuId from tfw_relation where roleId in (" + roleId + ")) or id in (" + roleIn + "))");
 		sql.append("	 and id not in(" + roleOut + ")");
 		sql.append("	)");
 		sql.append(" order by levels,pCode,num");

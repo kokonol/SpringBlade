@@ -57,7 +57,7 @@ public class CacheController extends BladeController {
 		Map<String, Object> userRole = CacheKit.get(MENU_CACHE, "roleExt_" + userId,
 				new ILoader() {
 					public Object load() {
-						return Db.selectOne("select * from TFW_ROLE_EXT where userId= #{id}", Paras.create().set("id", userId));
+						return Db.selectOne("select * from tfw_role_ext where userId= #{id}", Paras.create().set("id", userId));
 					}
 				});
 
@@ -68,12 +68,12 @@ public class CacheController extends BladeController {
 			roleOut = Func.toStr(userRole.get("ROLEOUT"));
 		}
 		final StringBuilder sql = new StringBuilder();
-		sql.append("select TFW_MENU.* ,(select name from TFW_MENU where code=#{code}) as PNAME  from TFW_MENU");
+		sql.append("select tfw_menu.* ,(select name from tfw_menu where code=#{code}) as PNAME  from tfw_menu");
 		sql.append(" where ( ");
 		sql.append("	 (status=1)");
 		sql.append("	 and (icon is not null and (icon like '%btn%' or icon like '%icon%' ) ) ");
 		sql.append("	 and (pCode=#{code})");
-		sql.append("	 and (id in (select menuId from TFW_RELATION where roleId in ("
+		sql.append("	 and (id in (select menuId from tfw_relation where roleId in ("
 				+ roleId + ")) or id in (" + roleIn + "))");
 		sql.append("	 and id not in(" + roleOut + ")");
 		sql.append("	)");
@@ -102,7 +102,7 @@ public class CacheController extends BladeController {
 		Map<String, Object> userRole = CacheKit.get(MENU_CACHE, "roleExt_" + userId,
 				new ILoader() {
 					public Object load() {
-						return Db.selectOne("select * from TFW_ROLE_EXT where userId= #{id}", Paras.create().set("id", userId));
+						return Db.selectOne("select * from tfw_role_ext where userId= #{id}", Paras.create().set("id", userId));
 					}
 				});
 
@@ -113,12 +113,12 @@ public class CacheController extends BladeController {
 			roleOut = Func.toStr(userRole.get("ROLEOUT"));
 		}
 		final StringBuilder sql = new StringBuilder();
-		sql.append("select TFW_MENU.* ,(select name from TFW_MENU where code=#{code}) as PNAME  from TFW_MENU");
+		sql.append("select tfw_menu.* ,(select name from tfw_menu where code=#{code}) as PNAME  from tfw_menu");
 		sql.append(" where ( ");
 		sql.append("	 (status=1)");
 		sql.append("	 and (icon is not null and (icon like '%btn%' or icon like '%icon%' ) ) ");
 		sql.append("	 and (pCode=#{code})");
-		sql.append("	 and (id in (select menuId from TFW_RELATION where roleId in ("
+		sql.append("	 and (id in (select menuId from tfw_relation where roleId in ("
 				+ roleId + ")) or id in (" + roleIn + "))");
 		sql.append("	 and id not in(" + roleOut + ")");
 		sql.append("	)");
@@ -149,7 +149,7 @@ public class CacheController extends BladeController {
 		List<Map<String, Object>> dict = CacheKit.get(DICT_CACHE, "dict_common_" + code,
 				new ILoader() {
 					public Object load() {
-						return Db.selectList("select num as ID,pId as PID,name as TEXT from  TFW_DICT where code=#{code} and num>0", Paras.create().set("code", code));
+						return Db.selectList("select num as ID,pId as PID,name as TEXT from  tfw_dict where code=#{code} and num>0", Paras.create().set("code", code));
 					}
 				});
 		StringBuilder sb = new StringBuilder();
@@ -170,7 +170,7 @@ public class CacheController extends BladeController {
 		List<Map<String, Object>> dict = CacheKit.get(DICT_CACHE, "dict_combo_" + code,
 				new ILoader() {
 					public Object load() {
-						return Db.selectList("select num as \"id\",name as \"text\" from  TFW_DICT where code=#{code} and num>0", Paras.create().set("code", code), new AopContext("ztree"));
+						return Db.selectList("select num as \"id\",name as \"text\" from  tfw_dict where code=#{code} and num>0", Paras.create().set("code", code), new AopContext("ztree"));
 					}
 				});
 
@@ -184,7 +184,7 @@ public class CacheController extends BladeController {
 		List<Map<String, Object>> dept = CacheKit.get(DEPT_CACHE, "dept_all",
 				new ILoader() {
 					public Object load() {
-						return Db.selectList("select ID,PID,simpleName as TEXT from  TFW_DEPT order by pId,num asc", Paras.create(), new AopContext(), Cst.me().getDefaultSelectFactory().deptIntercept());
+						return Db.selectList("select ID,PID,simpleName as TEXT from  tfw_dept order by pId,num asc", Paras.create(), new AopContext(), Cst.me().getDefaultSelectFactory().deptIntercept());
 					}
 				});
 		StringBuilder sb = new StringBuilder();
@@ -205,7 +205,7 @@ public class CacheController extends BladeController {
 		List<Map<String, Object>> dept = CacheKit.get(DEPT_CACHE, "user_all",
 				new ILoader() {
 					public Object load() {
-						return Db.selectList("select ID,name TEXT from TFW_USER where status=1 and name is not null order by name ", Paras.create(), new AopContext(), Cst.me().getDefaultSelectFactory().userIntercept());
+						return Db.selectList("select ID,name TEXT from tfw_user where status=1 and name is not null order by name ", Paras.create(), new AopContext(), Cst.me().getDefaultSelectFactory().userIntercept());
 					}
 				});
 		StringBuilder sb = new StringBuilder();
@@ -226,7 +226,7 @@ public class CacheController extends BladeController {
 		List<Map<String, Object>> dept = CacheKit.get(ROLE_CACHE, "role_all",
 				new ILoader() {
 					public Object load() {
-						return Db.selectList("select ID,name TEXT from TFW_Role where  name is not null order by name ", Paras.create(), new AopContext("ztree"));
+						return Db.selectList("select ID,name TEXT from tfw_role where  name is not null order by name ", Paras.create(), new AopContext("ztree"));
 					}
 				});
 		StringBuilder sb = new StringBuilder();
@@ -246,7 +246,7 @@ public class CacheController extends BladeController {
 		List<Map<String, Object>> dic = CacheKit.get(DICT_CACHE, "dict_all",
 				new ILoader() {
 					public Object load() {
-						return Db.selectList("select code \"code\",id \"id\",pId \"pId\",name \"name\",num \"num\",'false' \"open\" from TFW_DICT order by code asc,num asc", Paras.create());
+						return Db.selectList("select code \"code\",id \"id\",pId \"pId\",name \"name\",num \"num\",'false' \"open\" from tfw_dict order by code asc,num asc", Paras.create());
 					}
 				});
 
@@ -259,7 +259,7 @@ public class CacheController extends BladeController {
 		List<Map<String, Object>> dept = CacheKit.get(DEPT_CACHE, "dept_tree_all_" + ShiroKit.getUser().getId(),
 				new ILoader() {
 					public Object load() {
-						return Db.selectList("select id \"id\",pId \"pId\",simpleName as \"name\",(case when (pId=0 or pId is null) then 'true' else 'false' end) \"open\" from  TFW_DEPT ", Paras.create(), new AopContext("ztree"), Cst.me().getDefaultSelectFactory().deptIntercept());
+						return Db.selectList("select id \"id\",pId \"pId\",simpleName as \"name\",(case when (pId=0 or pId is null) then 'true' else 'false' end) \"open\" from  tfw_dept ", Paras.create(), new AopContext("ztree"), Cst.me().getDefaultSelectFactory().deptIntercept());
 					}
 				});
 
@@ -272,7 +272,7 @@ public class CacheController extends BladeController {
 		List<Map<String, Object>> dept = CacheKit.get(ROLE_CACHE, "role_tree_all_" + ShiroKit.getUser().getId(),
 				new ILoader() {
 					public Object load() {
-						return Db.selectList("select id \"id\",pId \"pId\",name as \"name\",(case when (pId=0 or pId is null) then 'true' else 'false' end) \"open\" from  TFW_ROLE ", Paras.create(), new AopContext("ztree"), Cst.me().getDefaultSelectFactory().roleIntercept());
+						return Db.selectList("select id \"id\",pId \"pId\",name as \"name\",(case when (pId=0 or pId is null) then 'true' else 'false' end) \"open\" from  tfw_role ", Paras.create(), new AopContext("ztree"), Cst.me().getDefaultSelectFactory().roleIntercept());
 					}
 				});
 
@@ -286,7 +286,7 @@ public class CacheController extends BladeController {
 		List<Map<String, Object>> dict = CacheKit.get(DICT_CACHE, "dict_" + id,
 				new ILoader() {
 					public Object load() {
-						return Db.selectList("select CODE from TFW_DICT where id=#{id}",Paras.create().set("id", id), new AopContext("ztree"));
+						return Db.selectList("select CODE from tfw_dict where id=#{id}",Paras.create().set("id", id), new AopContext("ztree"));
 					}
 				});
 		return json(dict);
@@ -298,7 +298,7 @@ public class CacheController extends BladeController {
 		List<Map<String, Object>> menu = CacheKit.get(MENU_CACHE, "menu_tree_all",
 				new ILoader() {
 					public Object load() {
-						return Db.selectList("select code \"id\",pCode \"pId\",name \"name\",(case when levels=1 then 'true' else 'false' end) \"open\" from TFW_MENU where status=1 order by levels asc,num asc");
+						return Db.selectList("select code \"id\",pCode \"pId\",name \"name\",(case when levels=1 then 'true' else 'false' end) \"open\" from tfw_menu where status=1 order by levels asc,num asc");
 					}
 				});
 
@@ -313,9 +313,9 @@ public class CacheController extends BladeController {
 				new ILoader() {
 					@SuppressWarnings("rawtypes")
 					public Object load() {
-						String table = "TFW_MENU";
+						String table = "tfw_menu";
 						String pid = "";
-						List<Map> record = Db.selectList("select PID from TFW_ROLE where id in (" + roleId + ")"); 
+						List<Map> record = Db.selectList("select PID from tfw_role where id in (" + roleId + ")");
 						for (Map p : record) {
 							if (!Func.isEmpty(p.get("PID"))) {
 								pid += p.get("PID").toString() + ",";
@@ -323,14 +323,14 @@ public class CacheController extends BladeController {
 						}
 						if (!Func.isEmpty(pid)) {
 							pid = StrKit.removeSuffix(pid, ",");
-							table = "(select * from TFW_MENU where id in( select MENUID from TFW_RELATION where roleId in ("
+							table = "(select * from tfw_menu where id in( select MENUID from tfw_relation where roleId in ("
 									+ pid + ") ))";
 						}
 						StringBuilder sb = new StringBuilder();
-						sb.append("select m.id \"id\",(select id from TFW_MENU  where code=m.pCode) \"pId\",name \"name\",(case when m.levels=1 then 'true' else 'false' end) \"open\",(case when r.menuId is not null then 'true' else 'false' end) \"checked\"");
+						sb.append("select m.id \"id\",(select id from tfw_menu  where code=m.pCode) \"pId\",name \"name\",(case when m.levels=1 then 'true' else 'false' end) \"open\",(case when r.menuId is not null then 'true' else 'false' end) \"checked\"");
 						sb.append(" from ");
 						sb.append(table);
-						sb.append(" m left join (select MENUID from TFW_RELATION where roleId in ("
+						sb.append(" m left join (select MENUID from tfw_relation where roleId in ("
 								+ roleId
 								+ ") GROUP BY MENUID) r on m.id=r.menuId where m.status=1 order by m.levels,m.num asc");
 						return Db.selectList(sb.toString());
@@ -348,9 +348,9 @@ public class CacheController extends BladeController {
 		List<Map<String, Object>> menu = CacheKit.get(ROLE_CACHE, "role_tree_" + Id,
 				new ILoader() {
 					public Object load() {
-						String sql = "select id \"id\",pId \"pId\",name as \"name\",(case when (pId=0 or pId is null) then 'true' else 'false' end) \"open\" from  TFW_ROLE order by pId,num asc";
+						String sql = "select id \"id\",pId \"pId\",name as \"name\",(case when (pId=0 or pId is null) then 'true' else 'false' end) \"open\" from  tfw_role order by pId,num asc";
 						if (Id.indexOf(",") == -1) {
-							sql = "select r.id \"id\",pId \"pId\",name as \"name\",(case when (pId=0 or pId is null) then 'true' else 'false' end) \"open\",(case when (r1.ID=0 or r1.ID is null) then 'false' else 'true' end) \"checked\" from  TFW_ROLE r left join (select ID  from TFW_ROLE where ID in ("
+							sql = "select r.id \"id\",pId \"pId\",name as \"name\",(case when (pId=0 or pId is null) then 'true' else 'false' end) \"open\",(case when (r1.ID=0 or r1.ID is null) then 'false' else 'true' end) \"checked\" from  tfw_role r left join (select ID  from tfw_role where ID in ("
 									+ roleId
 									+ ")) r1 on r.ID=r1.ID order by pId,num asc";
 						}

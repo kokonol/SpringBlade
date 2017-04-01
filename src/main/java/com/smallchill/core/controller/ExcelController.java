@@ -120,7 +120,7 @@ public class ExcelController extends BladeController{
 		List<Map<String, Object>> menu = CacheKit.get("menuCache", "menu_table_all",
 				new ILoader() {
 					public Object load() {
-						return Db.selectList("select CODE,PCODE,NAME,URL,SOURCE,PATH,TIPS,ISOPEN from TFW_MENU order by levels asc,num asc");
+						return Db.selectList("select CODE,PCODE,NAME,URL,SOURCE,PATH,TIPS,ISOPEN from tfw_menu order by levels asc,num asc");
 					}
 				});
 		for (Map<String, Object> _menu : menu) {
